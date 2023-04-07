@@ -1,0 +1,97 @@
+#include <iostream>
+
+using namespace std;
+
+class Node {
+public:
+  int key;
+  Node *l;
+  Node *r;
+
+  Node(int key) {
+    this->key = key;
+    this->l = NULL;
+    this->r = NULL;
+  }
+};
+
+class BST {
+private:
+  Node *root;
+
+public:
+  BST() { root = NULL; }
+
+  void put(int key) {
+    Node *node = new Node(key);
+
+    if (root == NULL) {
+      root = node;
+      return;
+    }
+
+    Node *curr = root;
+    Node *prev = NULL;
+
+    while (curr != NULL) {
+      prev = curr;
+
+      if (key < curr->key) {
+        curr = curr->l;
+      } else {
+        curr = curr->r;
+      }
+    }
+
+    if (key < prev->key) {
+      prev->l = node;
+    } else {
+      prev->r = node;
+    }
+  }
+
+  bool binary_search(int key) {
+    Node *cur = root;
+
+    while (cur != NULL) {
+      if (key == cur->key) {
+        return true;
+      } else if (key < cur->key) {
+        cur = cur->l;
+      } else {
+        cur = cur->r;
+      }
+    }
+
+    return false;
+  }
+
+  void sortt() { reverseAll(root); }
+
+  void reverseAll(Node *node) {
+    if (node == NULL) {
+      return;
+    }
+
+    reverseAll(node->l);
+    cout << node->key << " ";
+    reverseAll(node->r);
+  }
+};
+
+int main() {
+  BST bst;
+
+  bst.put(5);
+  bst.put(3);
+  bst.put(7);
+  bst.put(2);
+  bst.put(9);
+
+  bst.sortt();
+
+  cout << endl << bst.binary_search(2) << endl;
+  cout << bst.binary_search(4) << endl;
+
+  return 0;
+}
